@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description"
+    content="Matrix-Game 3.0: Real-Time and Streaming Interactive World Model with Long-Horizon Memory" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Matrix-Game 3.0: Real-Time and Streaming Interactive World Model with Long-Horizon Memory</title>
+
+  <!-- FONTS & STYLES -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <!-- <link rel="icon" href="static/images/logo.png"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+
+  <section class="hero" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); padding: 4rem 0 2rem;">
+    <div class="hero-body has-text-centered">
+      <h1 class="title is-1"
+        style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        Matrix-Game 3.0</h1>
+      <p style="font-size: 1.5rem; color: #4a5568; margin-bottom: 0.5rem; font-weight: 500;">Real-Time and Streaming
+        Interactive World Model with Long-Horizon Memory</p>
+
+
+      <!-- <p><em>Skywork Multimodality Team</em></p> -->
+      <p style="font-size: 1.1rem; color: #718096; margin-bottom: 2rem;">
+        <em>Skywork AI</em>
+      </p>
+
+      <p style="margin-top:1rem;">
+        <a href="https://arxiv.org/abs/2508.13009" class="button is-dark is-small is-rounded">
+          <span class="icon"><i class="ai ai-arxiv"></i></span><span>Technical Report</span>
+        </a>
+        <a href="https://github.com/SkyworkAI/Matrix-Game" class="button is-dark is-small is-rounded">
+          <span class="icon"><i class="fab fa-github"></i></span><span>GitHub</span>
+        </a>
+        <a href="https://huggingface.co/Skywork/Matrix-Game-2.0" class="button is-dark is-small is-rounded">
+          <span class="icon">🤗</span><span>HuggingFace</span>
+        </a>
+      </p>
+    </div>
+  </section>
+
+
+
+  <!-- ABSTRACT -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Abstract</h2>
+
+      <!-- Abstract Text -->
+      <div class="content has-text-justified">
+        <p>
+          TBD
+        </p>
+      </div>
+
+      <!-- Main Promotional Video -->
+      <div style="margin-top: 2rem;">
+        <div
+          style="width: 100%; aspect-ratio: 16 / 9; background-color: #f1f5f9; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-weight: bold; font-size: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          Main Abstract Video Placeholder
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO DEMOS -->
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-2">Video Demonstration 1</h2>
+      <p class="subtitle has-text-left">TBD</p>
+      <div class="video-grid" id="videoContainer_demo1"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-2">Video Demonstration 2</h2>
+      <p class="subtitle has-text-left">TBD</p>
+      <div class="video-grid" id="videoContainer_demo2"></div>
+    </div>
+  </section>
+
+  <!-- ACK / CITATION -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3">Acknowledgement</h2>
+      <div class="content has-text-justified">
+
+        <!-- <ul>
+  <li><a href="https://unipic-v2.github.io/">Skywork UniPic 2.0 Building Kontext Model with Online RL for Unified Multimodal Model</a> </li>
+</ul> -->
+
+        <p>We are grateful to the community for their open exploration and contributions to the field of unified
+          multimodal model.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+        <h2 class="title is-3" style="margin-bottom: 0;">Citation</h2>
+        <button id="copy-citation-btn" class="button is-small is-dark" onclick="copyCitation()"
+          title="Copy citation to clipboard">
+          <span class="icon is-small">
+            <i class="fas fa-copy"></i>
+          </span>
+          <span>Copy</span>
+        </button>
+      </div>
+      <pre><code id="citation-content">
+      
+}</code></pre>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">Template adapted from <a href="https://nerfies.github.io/">NERFies</a>,
+        CC BY‑SA 4.0.</div>
+    </div>
+  </footer>
+
+  <!-- JS: Dynamic Video Loader (Placeholder Version) -->
+  <script>
+    function createPlaceholderVideo(index) {
+      const div = document.createElement('div');
+      // Ensure the placeholder respects the video-grid layout
+      div.style.width = '100%';
+      div.style.aspectRatio = '16 / 9';
+      div.style.backgroundColor = '#f8fafc';
+      div.style.borderRadius = '8px';
+      div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
+      div.style.display = 'flex';
+      div.style.alignItems = 'center';
+      div.style.justifyContent = 'center';
+      div.style.textAlign = 'center';
+      div.style.color = '#94a3b8';
+      div.style.fontWeight = 'bold';
+      div.style.fontSize = '1.1rem';
+      div.style.border = '2px dashed #cbd5e1';
+      div.innerHTML = `<div>Video Placeholder ${index + 1}<br><span style="font-size: 0.9rem; font-weight: normal;">Upload your video</span></div>`;
+      return div;
+    }
+
+    // Number of placeholders to show in each section
+    const placeholders_demo1 = Array(8).fill('');
+    const placeholders_demo2 = Array(4).fill('');
+
+    function initVideoWall() {
+      const sections = [
+        { containerId: 'videoContainer_demo1', videos: placeholders_demo1, name: 'Demo Section 1' },
+        { containerId: 'videoContainer_demo2', videos: placeholders_demo2, name: 'Demo Section 2' }
+      ];
+
+      sections.forEach(section => {
+        const container = document.getElementById(section.containerId);
+        if (!container) return;
+
+        container.innerHTML = '';
+
+        // Setup simple CSS grid for placeholders, similar to full video grid
+        container.style.display = 'grid';
+        container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
+        container.style.gap = '20px';
+        container.style.marginTop = '20px';
+
+        section.videos.forEach((_, index) => {
+          const placeholder = createPlaceholderVideo(index);
+          container.appendChild(placeholder);
+        });
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initVideoWall);
+  </script>
+
+  <script>
+    function copyCitation() {
+      const citationContent = document.getElementById('citation-content').textContent;
+      const copyButton = document.getElementById('copy-citation-btn');
+
+      navigator.clipboard.writeText(citationContent).then(function () {
+        // Change button text to indicate success
+        const buttonText = copyButton.querySelector('span:last-child');
+        const originalText = buttonText.textContent;
+        buttonText.textContent = 'Copied!';
+        copyButton.classList.remove('is-dark');
+        copyButton.classList.add('is-success');
+
+        // Reset button after 2 seconds
+        setTimeout(function () {
+          buttonText.textContent = originalText;
+          copyButton.classList.remove('is-success');
+          copyButton.classList.add('is-dark');
+        }, 2000);
+      }).catch(function (err) {
+        console.error('Failed to copy citation: ', err);
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = citationContent;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+
+        // Show success feedback
+        const buttonText = copyButton.querySelector('span:last-child');
+        const originalText = buttonText.textContent;
+        buttonText.textContent = 'Copied!';
+        copyButton.classList.remove('is-dark');
+        copyButton.classList.add('is-success');
+
+        setTimeout(function () {
+          buttonText.textContent = originalText;
+          copyButton.classList.remove('is-success');
+          copyButton.classList.add('is-dark');
+        }, 2000);
+      });
+    }
+  </script>
+
+</body>
+
+</html>
