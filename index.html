@@ -372,6 +372,89 @@
       height: auto;
       display: block;
     }
+
+    /* ── Plan A+C: Frame strip panel ── */
+    .frame-strip-panel {
+      background: #0f172a;
+      padding: 6px;
+    }
+
+    /* Timeline strip (Plan C) */
+    .frame-timeline {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 4px;
+    }
+
+    .frame-timeline-item {
+      flex: 1;
+      position: relative;
+      cursor: default;
+    }
+
+    .frame-timeline-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 2px;
+      border: 1.5px solid transparent;
+    }
+
+    .frame-timeline-item.is-memory img {
+      border-color: #38bdf8;
+    }
+
+    .frame-timeline-item.is-current img {
+      border-color: #f59e0b;
+    }
+
+    .frame-timeline-item .ft-label {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 700;
+      color: #fff;
+      text-shadow: 0 1px 3px #000;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* Plan A: Early vs Late comparison row */
+    .frame-compare {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .frame-compare-item {
+      flex: 1;
+      position: relative;
+    }
+
+    .frame-compare-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 3px;
+    }
+
+    .frame-compare-item .fc-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 2px 0 1px;
+      letter-spacing: 0.03em;
+    }
+
+    .fc-label.fc-memory {
+      color: #38bdf8;
+    }
+
+    .fc-label.fc-current {
+      color: #f59e0b;
+    }
   </style>
   <script>
     function createVideoCard(path) {
@@ -387,7 +470,6 @@
       source.type = 'video/mp4';
       video.appendChild(source);
 
-      // Click-to-fullscreen
       video.addEventListener('dblclick', function () {
         if (video.requestFullscreen) video.requestFullscreen();
         else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
@@ -398,6 +480,103 @@
       });
 
       card.appendChild(video);
+      return card;
+    }
+
+    // Derive the frame image key from the video path
+    // e.g. 'static/videos/30s/031.mp4'  → '30s_031'
+    //      'static/videos/1min/091.mp4' → '1min_091'
+    //      'static/videos/tp_demo/video_lingbot-..._91_action.mp4' → 'tp_91'
+    function videoPathToKey(path) {
+      const parts = path.split('/');
+      const folder = parts[parts.length - 2];   // '30s', '1min', 'tp_demo'
+      const file = parts[parts.length - 1].replace('.mp4', '');
+      if (folder === 'tp_demo') {
+        // extract the number before '_action'
+        const m = file.match(/_([0-9]+)_action$/);
+        return m ? 'tp_' + m[1] : 'tp_' + file;
+      }
+      return folder + '_' + file;
+    }
+
+    // Plan A + C: video card with a 6-frame timeline strip and early/late comparison
+    function createFrameStripCard(path) {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+
+      // ── Standard video player ──
+      const video = document.createElement('video');
+      video.controls = true;
+      video.preload = 'metadata';
+      const source = document.createElement('source');
+      source.src = path;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.addEventListener('dblclick', () => {
+        if (video.requestFullscreen) video.requestFullscreen();
+        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+      });
+      video.addEventListener('error', () => {
+        card.innerHTML = `<div style="padding:12px;text-align:center;color:#721c24;">Video load failed<br><small>${path}</small></div>`;
+      });
+      card.appendChild(video);
+
+      const key = videoPathToKey(path);
+      const base = 'static/imgs/memory_frames/' + key;
+
+      // ── Plan C: Timeline strip (6 frames) ──
+      const panel = document.createElement('div');
+      panel.className = 'frame-strip-panel';
+
+      const timeline = document.createElement('div');
+      timeline.className = 'frame-timeline';
+
+      const N = 6;
+      // Frames 0 and 1 are memory refs (early), frame 5 is current
+      for (let i = 0; i < N; i++) {
+        const item = document.createElement('div');
+        item.className = 'frame-timeline-item';
+        if (i <= 1) item.classList.add('is-memory');
+        if (i === N - 1) item.classList.add('is-current');
+
+        const img = new Image();
+        img.src = `${base}_strip_${i}.jpg`;
+        img.alt = `t${i}`;
+        img.title = i <= 1 ? '📌 Memory Frame' : (i === N - 1 ? '🎬 Current' : '');
+        item.appendChild(img);
+
+        const lbl = document.createElement('span');
+        lbl.className = 'ft-label';
+        lbl.textContent = i <= 1 ? '📌' : (i === N - 1 ? '🎬' : '');
+        item.appendChild(lbl);
+
+        timeline.appendChild(item);
+      }
+      panel.appendChild(timeline);
+
+      // ── Plan A: Early vs Late comparison ──
+      const compare = document.createElement('div');
+      compare.className = 'frame-compare';
+
+      ['early', 'late'].forEach((type, idx) => {
+        const item = document.createElement('div');
+        item.className = 'frame-compare-item';
+
+        const img = new Image();
+        img.src = `${base}_${type}.jpg`;
+        img.alt = type;
+        item.appendChild(img);
+
+        const lbl = document.createElement('div');
+        lbl.className = 'fc-label ' + (idx === 0 ? 'fc-memory' : 'fc-current');
+        lbl.textContent = idx === 0 ? '📌 Memory Ref' : '🎬 Late Scene';
+        item.appendChild(lbl);
+
+        compare.appendChild(item);
+      });
+      panel.appendChild(compare);
+
+      card.appendChild(panel);
       return card;
     }
 
@@ -485,12 +664,12 @@
     const videos_mem_fp_r1 = [
       'static/videos/30s/031.mp4',
       // 'static/videos/30s/000.mp4',
-      'static/videos/30s/012.mp4',
+      'static/videos/30s/010_2.mp4',
       'static/videos/30s/004.mp4',
       'static/videos/30s/076.mp4',
       'static/videos/30s/002.mp4',
       'static/videos/30s/021.mp4',
-      'static/videos/30s/091.mp4',
+      // 'static/videos/30s/091.mp4',
       'static/videos/30s/025.mp4'
     ];
     const videos_mem_fp_r2 = [
@@ -511,10 +690,10 @@
       const sections = [
         { containerId: 'videoContainer_svi_r1', videos: videos_svi_r1, singleRow: true },
         { containerId: 'videoContainer_svi_r2', videos: videos_svi_r2, singleRow: true },
-        { containerId: 'videoContainer_mem_fp_r1', videos: videos_mem_fp_r1, singleRow: true },
-        { containerId: 'videoContainer_mem_fp_r2', videos: videos_mem_fp_r2, singleRow: true },
-        { containerId: 'videoContainer_mem_tp_r1', videos: videos_mem_tp_r1, singleRow: true },
-        { containerId: 'videoContainer_mem_tp_r2', videos: videos_mem_tp_r2, singleRow: true },
+        { containerId: 'videoContainer_mem_fp_r1', videos: videos_mem_fp_r1, singleRow: true, frameStrip: true },
+        { containerId: 'videoContainer_mem_fp_r2', videos: videos_mem_fp_r2, singleRow: true, frameStrip: true },
+        { containerId: 'videoContainer_mem_tp_r1', videos: videos_mem_tp_r1, singleRow: true, frameStrip: false },
+        { containerId: 'videoContainer_mem_tp_r2', videos: videos_mem_tp_r2, singleRow: true, frameStrip: false },
         { containerId: 'videoContainer_distill_30s', videos: videos_distill_30s, singleRow: true }
         // { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min, singleRow: true }
       ];
@@ -558,7 +737,10 @@
         } else {
           // Single-row layout
           vids.forEach(path => {
-            container.appendChild(createVideoCard(path));
+            const card = section.frameStrip
+              ? createFrameStripCard(path)
+              : createVideoCard(path);
+            container.appendChild(card);
           });
         }
       });
