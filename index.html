@@ -20,28 +20,30 @@
 
 <body>
 
-  <section class="hero" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%); padding: 4rem 0 2rem;">
-    <div class="hero-body has-text-centered">
+  <section class="hero"
+    style="background: url('static/imgs/hero_bg.png') no-repeat center center; background-size: cover; padding: 4rem 0 2rem; position: relative;">
+    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.45);"></div>
+    <div class="hero-body has-text-centered" style="position: relative; z-index: 1;">
       <h1 class="title is-1"
-        style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+        style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.4);">
         Matrix-Game 3.0</h1>
-      <p style="font-size: 1.5rem; color: #4a5568; margin-bottom: 0.5rem; font-weight: 500;">Real-Time and Streaming
+      <p
+        style="font-size: 1.5rem; color: #e2e8f0; margin-bottom: 0.5rem; font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.3);">
+        Real-Time and Streaming
         Interactive World Model with Long-Horizon Memory</p>
 
-
-      <!-- <p><em>Skywork Multimodality Team</em></p> -->
-      <p style="font-size: 1.1rem; color: #718096; margin-bottom: 2rem;">
+      <p style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 2rem;">
         <em>Skywork AI</em>
       </p>
 
       <p style="margin-top:1rem;">
-        <a href="https://arxiv.org/abs/2508.13009" class="button is-dark is-small is-rounded">
+        <a href="https://arxiv.org/abs/2508.13009" class="button is-light is-small is-rounded">
           <span class="icon"><i class="ai ai-arxiv"></i></span><span>Technical Report</span>
         </a>
-        <a href="https://github.com/SkyworkAI/Matrix-Game" class="button is-dark is-small is-rounded">
+        <a href="https://github.com/SkyworkAI/Matrix-Game" class="button is-light is-small is-rounded">
           <span class="icon"><i class="fab fa-github"></i></span><span>GitHub</span>
         </a>
-        <a href="https://huggingface.co/Skywork/Matrix-Game-2.0" class="button is-dark is-small is-rounded">
+        <a href="https://huggingface.co/Skywork/Matrix-Game-2.0" class="button is-light is-small is-rounded">
           <span class="icon">🤗</span><span>HuggingFace</span>
         </a>
       </p>
@@ -58,34 +60,138 @@
       <!-- Abstract Text -->
       <div class="content has-text-justified">
         <p>
-          TBD
+          With the advancement of interactive video generation, diffusion models have increasingly demonstrated their
+          potential as world models. However, existing approaches still struggle to simultaneously achieve
+          memory-enabled long-term temporal consistency and high-resolution real-time generation, limiting their
+          applicability in real-world scenarios. To address this, we present <strong>Matrix-Game 3.0</strong>, a
+          memory-augmented interactive world model designed for 720p real-time long-form video generation.
+          Building upon Matrix-Game 2.0, we introduce systematic improvements across data, model, and inference.
+          <strong>First</strong>, we develop an upgraded industrial-scale infinite data engine that integrates Unreal
+          Engine-based synthetic data, large-scale automated collection from AAA games, and real-world video
+          augmentation to produce high-quality Video-Pose-Action-Prompt quadruplet data at scale.
+          <strong>Second</strong>, we propose a training framework for long-horizon consistency: by modeling prediction
+          residuals and re-injecting imperfect generated frames during training, the base model learns self-correction;
+          meanwhile, camera-aware memory retrieval and injection enable the base model to achieve long horizon
+          spatiotemporal consistency.
+          <strong>Third</strong>, we design a multi-segment autoregressive distillation strategy based on Distribution
+          Matching
+          Distillation (DMD), combined with model quantization and VAE decoder distillation, to achieve efficient
+          real-time inference.
+          Experimental results show that Matrix-Game 3.0 achieves up to 40 FPS real-time generation at 720p resolution
+          with a 5B model, while maintaining stable memory consistency over minute-long sequences. Scaling up to a
+          2&times;14B model further improves generation quality, dynamics, and generalization. Our approach provides a
+          practical pathway toward industrial-scale deployable world models.
         </p>
       </div>
 
       <!-- Main Promotional Video -->
       <div style="margin-top: 2rem;">
-        <div
-          style="width: 100%; aspect-ratio: 16 / 9; background-color: #f1f5f9; border: 2px dashed #94a3b8; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-weight: bold; font-size: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-          Main Abstract Video Placeholder
+        <video class="has-ratio" controls autoplay loop muted playsinline
+          style="width: 100%; aspect-ratio: 16 / 9; border-radius: 8px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+          <source src="static/videos/teaser.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- METHOD OVERVIEW -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-2 has-text-centered">Method Overview</h2>
+
+      <div class="box" style="margin-bottom: 2rem;">
+        <h3 class="title is-4">System Architecture</h3>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">Matrix-Game 3.0 consists of four tightly coupled
+          components: <strong>(1)</strong> an error-aware interactive base model ensuring accurate action
+          controllability and long-horizon consistency; <strong>(2)</strong> a camera-aware long-horizon memory
+          mechanism for robust spatiotemporal memory; <strong>(3)</strong> a training–inference aligned few-step
+          distillation pipeline for stable few-step generation; and <strong>(4)</strong> a real-time inference
+          acceleration module achieving up to 40 FPS at 720p.</p>
+        <p class="has-text-justified">The base model uses a unified bidirectional architecture for both multi-step and
+          few-step mode, jointly modeling past latent frames, noised current frames, and action conditions within a
+          single Diffusion Transformer. Error collection and error injection simulate imperfect conditioning, enabling
+          the model to learn self-correction for autoregressive long-horizon rollouts.</p>
+        <div style="margin-top: 1rem;">
+          <img src="static/imgs/overview.png" alt="System Overview"
+            style="width: 100%; height: auto; border-radius: 8px;">
+        </div>
+      </div>
+
+      <div class="box" style="margin-bottom: 2rem;">
+        <h3 class="title is-4">Memory-Augmented Generation</h3>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">To maintain consistency over minute-long sequences,
+          the model employs a <strong>joint self-attention mechanism</strong> that places retrieved memory latents,
+          recent history latents, and current prediction latents into the same attention space, so that the model can
+          exchange information across different temporal scales within a single denoising hierarchy.</p>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;"><strong>Camera-aware memory selection</strong>
+          retrieves only view-relevant historical content based on camera pose and field-of-view overlap, accompanied by
+          relative Plücker encoding to explicitly represent cross-view geometry. A persistent <em>sink latent</em> (the
+          first frame) provides a stable global anchor for scene style and appearance across the full rollout.</p>
+        <p class="has-text-justified">Error collection and injection are applied to the full conditioning context—both
+          memory and history—to bridge the gap between ground-truth training conditions and the imperfect contexts
+          encountered during autoregressive inference.</p>
+        <div style="margin-top: 1rem;">
+          <img src="static/imgs/memory_overview.png" alt="Memory Overview"
+            style="width: 100%; height: auto; border-radius: 8px;">
+        </div>
+      </div>
+
+      <div class="box">
+        <h3 class="title is-4">Training–Inference Aligned Few-Step Distillation</h3>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">We introduce a <strong>multi-segment self-generated
+            inference scheme</strong> for the bidirectional student, based on Distribution Matching Distillation (DMD).
+          Instead of using ground-truth frames as history (which creates training–inference mismatch), the student
+          performs multi-segment rollouts that mimic actual few-step inference: each segment starts from random noise,
+          with past frames taken from the tail of the previous segment and memory retrieved from an online-updated
+          memory pool.</p>
+        <p class="has-text-justified">Combined with INT8 quantization for the DiT attention layers, a lightweight pruned
+          VAE decoder (LightVAE, up to 5.2× speedup), and GPU-based camera-aware memory retrieval, the system achieves
+          <strong>up to 40 FPS real-time generation at 720p resolution</strong> using 8 GPUs for DiT inference and 1 GPU
+          for VAE decoding.
+        </p>
+        <div style="margin-top: 1rem;">
+          <img src="static/imgs/distillation.png" alt="Distillation"
+            style="width: 100%; height: auto; border-radius: 8px;">
         </div>
       </div>
     </div>
   </section>
 
   <!-- VIDEO DEMOS -->
-  <section class="section">
+  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">Video Demonstration 1</h2>
-      <p class="subtitle has-text-left">TBD</p>
-      <div class="video-grid" id="videoContainer_demo1"></div>
+      <h2 class="title is-2">30-Second Generation (Base Model)</h2>
+      <p class="subtitle has-text-left">Interactive 30-second video generation showcasing the base memory-augmented
+        model across diverse game scenes.</p>
+      <div class="video-grid" id="videoContainer_30s"></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">Video Demonstration 2</h2>
-      <p class="subtitle has-text-left">TBD</p>
-      <div class="video-grid" id="videoContainer_demo2"></div>
+      <h2 class="title is-2">1-Minute Generation (Base Model)</h2>
+      <p class="subtitle has-text-left">Matrix-Game 3.0 demonstrates highly consistent long-horizon memory by generating
+        1-minute coherent diverse videos.</p>
+      <div class="video-grid" id="videoContainer_1min"></div>
+    </div>
+  </section>
+
+  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-2">30-Second Generation (3-Step Distilled Model)</h2>
+      <p class="subtitle has-text-left">Matrix-Game 3.0 distilled to a 3-step model provides ultra-fast real-time
+        rendering capabilities while maintaining visual fidelity.</p>
+      <div class="video-grid" id="videoContainer_distill"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-2">1-Minute Generation (3-Step Distilled Model)</h2>
+      <p class="subtitle has-text-left">Long-horizon 1-minute generation achieved at ultra-fast speeds using the 3-step
+        distilled model.</p>
+      <div class="video-grid" id="videoContainer_distill_1min"></div>
     </div>
   </section>
 
@@ -95,12 +201,22 @@
       <h2 class="title is-3">Acknowledgement</h2>
       <div class="content has-text-justified">
 
-        <!-- <ul>
-  <li><a href="https://unipic-v2.github.io/">Skywork UniPic 2.0 Building Kontext Model with Online RL for Unified Multimodal Model</a> </li>
-</ul> -->
+        <p>We would like to express our gratitude to:</p>
 
-        <p>We are grateful to the community for their open exploration and contributions to the field of unified
-          multimodal model.</p>
+        <ul>
+          <li><a href="https://github.com/huggingface/diffusers">Diffusers</a> for their excellent diffusion model
+            framework</li>
+          <li><a href="https://github.com/Wan-Video/Wan2.2">SkyReels-V2</a> for their strong base model</li>
+          <li><a href="https://github.com/guandeh17/Self-Forcing">Self-Forcing</a> for their excellent work on
+            autoregressive generation</li>
+          <li><a href="https://github.com/KwaiVGI/GameFactory">GameFactory</a> for their idea of action control module
+          </li>
+          <li><a href="https://github.com/SkyworkAI/LightX2V">LightX2V</a> for their efficient quantization and VAE
+            distillation techniques</li>
+        </ul>
+
+        <p>We are grateful to the broader research community for their open exploration and contributions to the field
+          of interactive world generation.</p>
       </div>
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
         <h2 class="title is-3" style="margin-bottom: 0;">Citation</h2>
@@ -125,54 +241,175 @@
     </div>
   </footer>
 
-  <!-- JS: Dynamic Video Loader (Placeholder Version) -->
-  <script>
-    function createPlaceholderVideo(index) {
-      const div = document.createElement('div');
-      // Ensure the placeholder respects the video-grid layout
-      div.style.width = '100%';
-      div.style.aspectRatio = '16 / 9';
-      div.style.backgroundColor = '#f8fafc';
-      div.style.borderRadius = '8px';
-      div.style.boxShadow = '0 2px 8px rgba(0,0,0,0.05)';
-      div.style.display = 'flex';
-      div.style.alignItems = 'center';
-      div.style.justifyContent = 'center';
-      div.style.textAlign = 'center';
-      div.style.color = '#94a3b8';
-      div.style.fontWeight = 'bold';
-      div.style.fontSize = '1.1rem';
-      div.style.border = '2px dashed #cbd5e1';
-      div.innerHTML = `<div>Video Placeholder ${index + 1}<br><span style="font-size: 0.9rem; font-weight: normal;">Upload your video</span></div>`;
-      return div;
+  <!-- JS: Dynamic Video Loader -->
+  <style>
+    .video-scroll-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      margin-top: 20px;
+      padding-bottom: 12px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
     }
 
-    // Number of placeholders to show in each section
-    const placeholders_demo1 = Array(8).fill('');
-    const placeholders_demo2 = Array(4).fill('');
+    .video-scroll-container::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .video-scroll-container::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 3px;
+    }
+
+    .video-scroll-container::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 3px;
+    }
+
+    .video-scroll-container::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    /* Two-row scroll container */
+    .video-scroll-container.two-rows {
+      flex-wrap: wrap;
+      height: auto;
+    }
+
+    .video-scroll-container.two-rows .video-column {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    .video-card {
+      flex-shrink: 0;
+      width: 420px;
+      background: #f8fafc;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .video-card video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  </style>
+  <script>
+    function createVideoCard(path) {
+      const card = document.createElement('div');
+      card.className = 'video-card';
+
+      const video = document.createElement('video');
+      video.controls = true;
+      video.preload = 'metadata';
+
+      const source = document.createElement('source');
+      source.src = path;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+
+      // Click-to-fullscreen
+      video.addEventListener('dblclick', function () {
+        if (video.requestFullscreen) video.requestFullscreen();
+        else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+      });
+
+      video.addEventListener('error', function () {
+        card.innerHTML = `<div style="padding:20px;text-align:center;color:#721c24;"><strong>Video load failed</strong><br><small>${path}</small></div>`;
+      });
+
+      card.appendChild(video);
+      return card;
+    }
+
+    const videos_1min = [
+      'static/videos/1min/000.mp4',
+      'static/videos/1min/001.mp4',
+      'static/videos/1min/091.mp4',
+      'static/videos/1min/094.mp4'
+    ];
+
+    const videos_30s = [
+      'static/videos/30s/031.mp4',
+      'static/videos/30s/000.mp4',
+      'static/videos/30s/012.mp4',
+      'static/videos/30s/001.mp4',
+      'static/videos/30s/004.mp4',
+      'static/videos/30s/076.mp4',
+      'static/videos/30s/002.mp4',
+      'static/videos/30s/021.mp4',
+      'static/videos/30s/091.mp4',
+      'static/videos/30s/025.mp4',
+      'static/videos/30s/073.mp4',
+      'static/videos/30s/097.mp4'
+    ];
+
+    const videos_distill = [
+      'static/videos/distillation/001.mp4',
+      'static/videos/distillation/002_wild.mp4',
+      'static/videos/distillation/010.mp4',
+      'static/videos/distillation/013.mp4',
+      'static/videos/distillation/018_wild.mp4',
+      'static/videos/distillation/025.mp4'
+    ];
+
+    const videos_distill_1min = [
+      'static/videos/distillation/1min/001.mp4',
+      'static/videos/distillation/1min/011.mp4',
+      'static/videos/distillation/1min/013.mp4',
+      'static/videos/distillation/1min/021.mp4',
+      'static/videos/distillation/1min/023.mp4'
+    ];
+
+    const TWO_ROW_THRESHOLD = 6;
 
     function initVideoWall() {
       const sections = [
-        { containerId: 'videoContainer_demo1', videos: placeholders_demo1, name: 'Demo Section 1' },
-        { containerId: 'videoContainer_demo2', videos: placeholders_demo2, name: 'Demo Section 2' }
+        { containerId: 'videoContainer_1min', videos: videos_1min },
+        { containerId: 'videoContainer_30s', videos: videos_30s },
+        { containerId: 'videoContainer_distill', videos: videos_distill },
+        { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min }
       ];
 
       sections.forEach(section => {
         const container = document.getElementById(section.containerId);
         if (!container) return;
-
         container.innerHTML = '';
+        container.className = 'video-scroll-container';
 
-        // Setup simple CSS grid for placeholders, similar to full video grid
-        container.style.display = 'grid';
-        container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(280px, 1fr))';
-        container.style.gap = '20px';
-        container.style.marginTop = '20px';
+        const vids = section.videos;
 
-        section.videos.forEach((_, index) => {
-          const placeholder = createPlaceholderVideo(index);
-          container.appendChild(placeholder);
-        });
+        if (vids.length > TWO_ROW_THRESHOLD) {
+          // Two-row layout: split videos into columns of 2
+          container.classList.add('two-rows');
+          const half = Math.ceil(vids.length / 2);
+          for (let i = 0; i < half; i++) {
+            const col = document.createElement('div');
+            col.className = 'video-column';
+            col.appendChild(createVideoCard(vids[i]));
+            if (i + half < vids.length) {
+              col.appendChild(createVideoCard(vids[i + half]));
+            }
+            container.appendChild(col);
+          }
+        } else {
+          // Single-row layout
+          vids.forEach(path => {
+            container.appendChild(createVideoCard(path));
+          });
+        }
       });
     }
 
