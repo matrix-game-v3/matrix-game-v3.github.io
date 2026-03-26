@@ -4,3 +4,4 @@ compress.py
 generate_teaser.py
 static/videos/teaser_raw_size.mp4
 static/videos/teaser
+*.pdf

@@ -98,60 +98,105 @@
     <div class="container is-max-desktop">
       <h2 class="title is-2 has-text-centered">Method Overview</h2>
 
+      <!-- Figure 1: System Overview Pipeline -->
       <div class="box" style="margin-bottom: 2rem;">
-        <h3 class="title is-4">System Architecture</h3>
-        <p class="has-text-justified" style="margin-bottom: 0.5rem;">Matrix-Game 3.0 consists of four tightly coupled
-          components: <strong>(1)</strong> an error-aware interactive base model ensuring accurate action
-          controllability and long-horizon consistency; <strong>(2)</strong> a camera-aware long-horizon memory
-          mechanism for robust spatiotemporal memory; <strong>(3)</strong> a training–inference aligned few-step
-          distillation pipeline for stable few-step generation; and <strong>(4)</strong> a real-time inference
-          acceleration module achieving up to 40 FPS at 720p.</p>
-        <p class="has-text-justified">The base model uses a unified bidirectional architecture for both multi-step and
-          few-step mode, jointly modeling past latent frames, noised current frames, and action conditions within a
-          single Diffusion Transformer. Error collection and error injection simulate imperfect conditioning, enabling
-          the model to learn self-correction for autoregressive long-horizon rollouts.</p>
-        <div style="margin-top: 1rem;">
-          <img src="static/imgs/overview.png" alt="System Overview"
+        <!-- <h3 class="title is-4">System Overview</h3> -->
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">
+          Our framework unifies three stages into an end-to-end pipeline:
+          <strong>(1) Data Engine</strong> — an industrial-scale infinite data engine integrating Unreal Engine
+          synthetic scenes, large-scale automated AAA game collection, and real-world video augmentation to produce
+          high-quality Video-Pose-Action-Prompt quadruplets at scale;
+          <strong>(2) Model Training</strong> — a memory-augmented Diffusion Transformer (DiT) with an error buffer that
+          learns action-conditioned generation with memory-enhanced long-horizon consistency;
+          <strong>(3) Inference Deployment</strong> — few-step sampling, INT8 quantization, and model distillation
+          achieving <strong>720p@40FPS</strong> real-time generation with a 5B model.
+        </p>
+        <figure style="margin-top: 1rem;">
+          <img src="static/imgs/mg3_overview.png" alt="System Overview"
             style="width: 100%; height: auto; border-radius: 8px;">
-        </div>
+          <figcaption style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; text-align: center;">
+            <strong>Figure 1:</strong> Overview of Matrix-Game 3.0. Our framework unifies Unreal Engine–based data
+            generation, memory-augmented DiT training with an error buffer, and accelerated real-time deployment.
+          </figcaption>
+        </figure>
       </div>
 
+      <!-- Figure 2: Interactive Base Model -->
+      <div class="box" style="margin-bottom: 2rem;">
+        <h3 class="title is-4">Error-Aware Interactive Base Model</h3>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">
+          The base model uses a unified bidirectional Diffusion Transformer that jointly models past latent frames,
+          noised current frames, and action conditions (mouse/keyboard) within a single architecture.
+          During training, an <strong>error collection</strong> mechanism records prediction residuals δ = x̂ᵢ − xⁱ into
+          an error buffer, while <strong>error injection</strong> x̃ᵢ = xⁱ + γδ introduces controlled perturbations to
+          simulate imperfect conditioning.
+          This bridges the gap between clean-data training and noisy autoregressive inference, enabling the model to
+          learn <strong>self-correction</strong> over long-horizon rollouts.
+        </p>
+        <figure style="margin-top: 1rem;">
+          <img src="static/imgs/overview.png" alt="Interactive Base Model"
+            style="width: 100%; height: auto; border-radius: 8px;">
+          <figcaption style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; text-align: center;">
+            <strong>Figure 2:</strong> Illustration of the interactive base model. Error collection and injection enable
+            autoregressive, long-horizon interactive generation with self-correction.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Figure 3: Memory-Augmented Model -->
       <div class="box" style="margin-bottom: 2rem;">
         <h3 class="title is-4">Memory-Augmented Generation</h3>
-        <p class="has-text-justified" style="margin-bottom: 0.5rem;">To maintain consistency over minute-long sequences,
-          the model employs a <strong>joint self-attention mechanism</strong> that places retrieved memory latents,
-          recent history latents, and current prediction latents into the same attention space, so that the model can
-          exchange information across different temporal scales within a single denoising hierarchy.</p>
-        <p class="has-text-justified" style="margin-bottom: 0.5rem;"><strong>Camera-aware memory selection</strong>
-          retrieves only view-relevant historical content based on camera pose and field-of-view overlap, accompanied by
-          relative Plücker encoding to explicitly represent cross-view geometry. A persistent <em>sink latent</em> (the
-          first frame) provides a stable global anchor for scene style and appearance across the full rollout.</p>
-        <p class="has-text-justified">Error collection and injection are applied to the full conditioning context—both
-          memory and history—to bridge the gap between ground-truth training conditions and the imperfect contexts
-          encountered during autoregressive inference.</p>
-        <div style="margin-top: 1rem;">
-          <img src="static/imgs/memory_overview.png" alt="Memory Overview"
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">
+          Built upon the base model, retrieved <strong>memory frames</strong> are incorporated as additional conditions
+          via a joint self-attention mechanism.
+          Memory latents, past frame latents, and noised current frame latents are placed into the same attention space,
+          enabling the model to jointly attend to long-term memory, short-term history, and the current prediction
+          target within a single denoising hierarchy.
+        </p>
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">
+          <strong>Camera-aware memory selection</strong> retrieves only view-relevant historical content based on camera
+          pose and field-of-view overlap, accompanied by relative Plücker encoding for cross-view geometric
+          representation. A persistent <em>sink latent</em> (the first frame) serves as a global anchor for scene style
+          and appearance. Small memory perturbations further enhance robustness during inference.
+        </p>
+        <figure style="margin-top: 1rem;">
+          <img src="static/imgs/memory_overview.png" alt="Memory-Augmented Model"
             style="width: 100%; height: auto; border-radius: 8px;">
-        </div>
+          <figcaption style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; text-align: center;">
+            <strong>Figure 3:</strong> Illustration of the memory-augmented base model. Retrieved memory frames are
+            jointly attended with past frames and noised current frames for long-horizon spatiotemporal consistency.
+          </figcaption>
+        </figure>
       </div>
 
+      <!-- Figure 5: Few-Step Distillation -->
       <div class="box">
         <h3 class="title is-4">Training–Inference Aligned Few-Step Distillation</h3>
-        <p class="has-text-justified" style="margin-bottom: 0.5rem;">We introduce a <strong>multi-segment self-generated
-            inference scheme</strong> for the bidirectional student, based on Distribution Matching Distillation (DMD).
-          Instead of using ground-truth frames as history (which creates training–inference mismatch), the student
-          performs multi-segment rollouts that mimic actual few-step inference: each segment starts from random noise,
-          with past frames taken from the tail of the previous segment and memory retrieved from an online-updated
-          memory pool.</p>
-        <p class="has-text-justified">Combined with INT8 quantization for the DiT attention layers, a lightweight pruned
-          VAE decoder (LightVAE, up to 5.2× speedup), and GPU-based camera-aware memory retrieval, the system achieves
+        <p class="has-text-justified" style="margin-bottom: 0.5rem;">
+          We introduce a <strong>multi-segment self-generated inference scheme</strong> for the bidirectional student,
+          based on Distribution Matching Distillation (DMD).
+          The student performs multi-segment rollouts that mimic actual few-step inference: each segment starts from
+          random noise, with past frames taken from the tail of the previous segment and memory retrieved from an
+          online-updated memory pool.
+          The final segment is used for distribution matching, thereby ensuring <strong>training–inference
+            consistency</strong>.
+        </p>
+        <p class="has-text-justified">
+          Combined with INT8 quantization for DiT attention layers, a lightweight pruned VAE decoder
+          (<strong>LightVAE</strong>, up to 5.2× speedup), and GPU-based camera-aware memory retrieval, the full
+          pipeline achieves
           <strong>up to 40 FPS real-time generation at 720p resolution</strong> using 8 GPUs for DiT inference and 1 GPU
           for VAE decoding.
         </p>
-        <div style="margin-top: 1rem;">
-          <img src="static/imgs/distillation.png" alt="Distillation"
+        <figure style="margin-top: 1rem;">
+          <img src="static/imgs/distillation.png" alt="Few-Step Distillation"
             style="width: 100%; height: auto; border-radius: 8px;">
-        </div>
+          <figcaption style="color: #64748b; font-size: 0.85rem; margin-top: 0.4rem; text-align: center;">
+            <strong>Figure 5:</strong> Illustration of the few-step distillation stage. The bidirectional student
+            performs multi-segment rollouts to mimic actual few-step inference, with the final segment used for
+            distribution matching.
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -405,7 +450,10 @@
       'static/videos/distillation/010.mp4',
       'static/videos/distillation/013.mp4',
       'static/videos/distillation/018_wild.mp4',
-      'static/videos/distillation/027.mp4'
+      'static/videos/distillation/023.mp4',
+      'static/videos/distillation/027.mp4',
+      'static/videos/distillation/031.mp4',
+      'static/videos/distillation/063.mp4'
     ];
 
     const videos_distill_1min = [
@@ -424,7 +472,7 @@
         { containerId: 'videoContainer_30s_fp', videos: videos_30s_fp, fixedCols: 5 },
         { containerId: 'videoContainer_30s_tp', videos: videos_30s_tp, fixedCols: 5 },
         { containerId: 'videoContainer_1min', videos: videos_1min },
-        { containerId: 'videoContainer_distill', videos: videos_distill },
+        { containerId: 'videoContainer_distill', videos: videos_distill, singleRow: true },
         { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min }
       ];
 
@@ -451,7 +499,7 @@
 
         container.className = 'video-scroll-container';
 
-        if (vids.length > TWO_ROW_THRESHOLD) {
+        if (vids.length > TWO_ROW_THRESHOLD && !section.singleRow) {
           // Two-row layout: split videos into columns of 2
           container.classList.add('two-rows');
           const half = Math.ceil(vids.length / 2);
