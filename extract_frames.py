@@ -28,20 +28,20 @@ N_STRIP = 6
 MEMORY_VIDEOS = {
     # key          : path
     # First-person 30s
-    # "30s_031"  : "static/videos/30s/031.mp4",
-    # "30s_010_2"  : "static/videos/30s/010_2.mp4",
-    "30s_004"  : "static/videos/30s/004.mp4",
+    "30s_031"  : "static/videos/30s/031.mp4",
+    "30s_010_2"  : "static/videos/30s/010_2.mp4",
+    # "30s_004"  : "static/videos/30s/004.mp4",
     # "30s_076"  : "static/videos/30s/076.mp4",
     # "30s_002"  : "static/videos/30s/002.mp4",
-    # "30s_021"  : "static/videos/30s/021.mp4",
+    "30s_021"  : "static/videos/30s/021.mp4",
     # "30s_091"  : "static/videos/30s/091.mp4",
     # "30s_025"  : "static/videos/30s/025.mp4",
     # First-person 1min
-    # "1min_091" : "static/videos/1min/091.mp4",
-    # "1min_094" : "static/videos/1min/094.mp4",
+    "1min_091" : "static/videos/1min/091.mp4",
+    "1min_094" : "static/videos/1min/094.mp4",
     # "1min_097" : "static/videos/1min/097.mp4",
-    # "1min_000" : "static/videos/1min/000.mp4",
-    # "1min_001" : "static/videos/1min/001.mp4",
+    "1min_000" : "static/videos/1min/000.mp4",
+    "1min_001" : "static/videos/1min/001.mp4",
     # Third-person
     # "tp_91"  : "static/videos/tp_demo/video_lingbot-I2V-A14B_91_action.mp4",
     # "tp_99"  : "static/videos/tp_demo/video_lingbot-I2V-A14B_99_action.mp4",
@@ -95,14 +95,14 @@ def process_video(key, path):
     # import pdb; pdb.set_trace()
     # ── Early frame (memory reference, t ≈ 3s or 5% of duration) ─────────
     # t_early = min(3.0 / duration, 0.05) if duration > 0 else 0.03 #duration=31.0625
-    t_early = 0.25#0.05
+    t_early = 0.05
     frame_early = extract_frame_at(cap, total_frames, t_early)
     if frame_early is not None:
         thumb = resize_to_width(frame_early, THUMB_W)
         cv2.imwrite(os.path.join(OUT_DIR, f"{key}_early.jpg"), thumb, [cv2.IMWRITE_JPEG_QUALITY, 85])
 
     # ── Late frame (current scene at 95% of duration) ────────────────────
-    t_end = 0.67#0.95
+    t_end = 0.95
     frame_late = extract_frame_at(cap, total_frames, t_end)
     if frame_late is not None:
         thumb = resize_to_width(frame_late, THUMB_W)

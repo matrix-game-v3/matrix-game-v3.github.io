@@ -2,6 +2,7 @@ temp_page_cmd.html
 temp_page.html
 compress.py
 generate_teaser.py
+extract_frames.py
 static/videos/teaser_raw_size.mp4
 static/videos/teaser
 *.pdf

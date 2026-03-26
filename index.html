@@ -663,21 +663,21 @@
     // Memory FP: 30s row + 1min row (semantically split)
     const videos_mem_fp_r1 = [
       'static/videos/30s/031.mp4',
-      // 'static/videos/30s/000.mp4',
-      'static/videos/30s/010_2.mp4',
-      'static/videos/30s/021.mp4',
-      'static/videos/30s/004.mp4',
-      'static/videos/30s/076.mp4',
-      'static/videos/30s/002.mp4',
-      // 'static/videos/30s/091.mp4',
-      'static/videos/30s/025.mp4'
-    ];
-    const videos_mem_fp_r2 = [
       'static/videos/1min/091.mp4',
       'static/videos/1min/094.mp4',
-      'static/videos/1min/097.mp4',
+      'static/videos/30s/021.mp4',
+      'static/videos/30s/010_2.mp4',
       'static/videos/1min/000.mp4',
       'static/videos/1min/001.mp4'
+    ];
+    const videos_mem_fp_r2 = [
+      'static/videos/30s/076.mp4',
+      'static/videos/30s/002.mp4',
+      'static/videos/1min/097.mp4',
+      'static/videos/30s/004.mp4',
+      'static/videos/30s/025.mp4',
+      'static/videos/30s/091.mp4',
+      // 'static/videos/30s/000.mp4',
     ];
 
     // Memory TP: split into two rows of 5
@@ -691,7 +691,7 @@
         { containerId: 'videoContainer_svi_r1', videos: videos_svi_r1, singleRow: true },
         { containerId: 'videoContainer_svi_r2', videos: videos_svi_r2, singleRow: true },
         { containerId: 'videoContainer_mem_fp_r1', videos: videos_mem_fp_r1, singleRow: true, frameStrip: true },
-        { containerId: 'videoContainer_mem_fp_r2', videos: videos_mem_fp_r2, singleRow: true, frameStrip: true },
+        { containerId: 'videoContainer_mem_fp_r2', videos: videos_mem_fp_r2, singleRow: true, frameStrip: false },
         { containerId: 'videoContainer_mem_tp_r1', videos: videos_mem_tp_r1, singleRow: true, frameStrip: false },
         { containerId: 'videoContainer_mem_tp_r2', videos: videos_mem_tp_r2, singleRow: true, frameStrip: false },
         { containerId: 'videoContainer_distill_30s', videos: videos_distill_30s, singleRow: true }
