@@ -205,56 +205,59 @@
   <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
     <div class="container is-max-desktop has-text-centered">
       <h2 class="title is-2">Base Model Generation</h2>
-      <p class="subtitle has-text-left">Error-aware interactive base model with self-correction capability, generating
-        30-second coherent video sequences.</p>
-      <div class="video-grid" id="videoContainer_svi"></div>
+      <p class="subtitle has-text-left">Error-aware interactive base model with self-correction capability.</p>
+      <div style="margin-top: 1.5rem;">
+        <div class="video-grid" id="videoContainer_svi_r1"></div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <div class="video-grid" id="videoContainer_svi_r2"></div>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">30-Second Generation (Memory Model)</h2>
-      <p class="subtitle has-text-left">Memory-augmented model with camera-aware retrieval, generating 30-second
-        interactive videos with long-horizon consistency across diverse perspectives.</p>
+      <h2 class="title is-2">Memory Model Generation</h2>
+      <p class="subtitle has-text-left">Memory-augmented model with camera-aware retrieval, generating
+        interactive videos with long-horizon consistency across diverse perspectives.
+        Each clip is conditioned on <strong>retrieved memory frames</strong> from past timesteps
+        (camera-aligned, Plücker-encoded) alongside the current generation window.</p>
 
       <!-- First-Person Sub-section -->
       <div style="margin-top: 2rem;">
-        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.5rem;">🎮 First-Person Perspective</h3>
-        <div class="video-grid" id="videoContainer_30s_fp"></div>
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.25rem;">🎮 First-Person</h3>
+        <p class="has-text-left" style="color:#64748b; font-size:0.85rem; margin-bottom:0.5rem;">Current generation
+          window conditioned on memory frames from earlier.</p>
+        <div class="video-grid" id="videoContainer_mem_fp_r1"></div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.25rem;"></h3>
+        <p class="has-text-left" style="color:#64748b; font-size:0.85rem; margin-bottom:0.5rem;"></p>
+        <div class="video-grid" id="videoContainer_mem_fp_r2"></div>
       </div>
 
       <!-- Third-Person Sub-section -->
       <div style="margin-top: 2.5rem;">
-        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.5rem;">🎬 Third-Person Perspective</h3>
-        <div class="video-grid" id="videoContainer_30s_tp"></div>
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.25rem;">🎬 Third-Person</h3>
+        <div class="video-grid" id="videoContainer_mem_tp_r1"></div>
+      </div>
+      <div style="margin-top: 1rem;">
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.25rem;"></h3>
+        <div class="video-grid" id="videoContainer_mem_tp_r2"></div>
       </div>
     </div>
   </section>
 
   <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">1-Minute Generation (Memory Model)</h2>
-      <p class="subtitle has-text-left">Matrix-Game 3.0 demonstrates highly consistent long-horizon memory by generating
-        1-minute coherent diverse videos.</p>
-      <div class="video-grid" id="videoContainer_1min"></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">30-Second Generation (3-Step Distilled Model)</h2>
+      <h2 class="title is-2">Distillation Model Generation</h2>
       <p class="subtitle has-text-left">Matrix-Game 3.0 distilled to a 3-step model provides ultra-fast real-time
         rendering capabilities while maintaining visual fidelity.</p>
-      <div class="video-grid" id="videoContainer_distill"></div>
-    </div>
-  </section>
 
-  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
-    <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">1-Minute Generation (3-Step Distilled Model)</h2>
-      <p class="subtitle has-text-left">Long-horizon 1-minute generation achieved at ultra-fast speeds using the 3-step
-        distilled model.</p>
-      <div class="video-grid" id="videoContainer_distill_1min"></div>
+      <div style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.5rem;"></h3>
+        <div class="video-grid" id="videoContainer_distill_30s"></div>
+      </div>
     </div>
   </section>
 
@@ -350,7 +353,7 @@
 
     .video-card {
       flex-shrink: 0;
-      width: 420px;
+      width: 320px;
       background: #f8fafc;
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
@@ -400,38 +403,42 @@
 
     const videos_svi = [
       'static/videos/svi_base/0.mp4',
+      'static/videos/svi_base/5.mp4',
+      'static/videos/svi_base/6.mp4',
+      'static/videos/svi_base/7.mp4',
+      'static/videos/svi_base/8.mp4',
+      'static/videos/svi_base/9.mp4',
+      'static/videos/svi_base/4.mp4',
       'static/videos/svi_base/1.mp4',
       'static/videos/svi_base/2.mp4',
       'static/videos/svi_base/3.mp4',
-      'static/videos/svi_base/4.mp4',
-      'static/videos/svi_base/5.mp4',
-      'static/videos/svi_base/6.mp4',
-      'static/videos/svi_base/7.mp4'
+      'static/videos/svi_base/10.mp4',
+      'static/videos/svi_base/12.mp4',
+      'static/videos/svi_base/13.mp4',
+      'static/videos/svi_base/11.mp4'
     ];
 
-    const videos_1min = [
-      'static/videos/1min/000.mp4',
-      'static/videos/1min/001.mp4',
-      'static/videos/1min/091.mp4',
-      'static/videos/1min/094.mp4'
-    ];
-
-    // First-person 30s (10 best)
-    const videos_30s_fp = [
+    // Memory Model: First-Person (30s row1+row2, 1min row3)
+    const videos_mem_fp = [
+      // 30s first-person
       'static/videos/30s/031.mp4',
-      'static/videos/30s/000.mp4',
       'static/videos/30s/012.mp4',
-      'static/videos/30s/001.mp4',
       'static/videos/30s/004.mp4',
       'static/videos/30s/076.mp4',
       'static/videos/30s/002.mp4',
       'static/videos/30s/021.mp4',
       'static/videos/30s/091.mp4',
-      'static/videos/30s/025.mp4'
+      'static/videos/30s/025.mp4',
+      // 1min first-person (row 3)
+      'static/videos/1min/091.mp4',
+      'static/videos/1min/094.mp4',
+      'static/videos/1min/097.mp4',
+      'static/videos/1min/000.mp4',
+      'static/videos/1min/001.mp4'
     ];
 
-    // Third-person (10 best)
-    const videos_30s_tp = [
+    // Memory Model: Third-Person
+    const videos_mem_tp = [
       'static/videos/tp_demo/video_lingbot-I2V-A14B_91_action.mp4',
       'static/videos/tp_demo/video_lingbot-I2V-A14B_99_action.mp4',
       'static/videos/tp_demo/video_lingbot-I2V-A14B_112_action.mp4',
@@ -444,36 +451,72 @@
       'static/videos/tp_demo/video_lingbot-I2V-A14B_7_action.mp4'
     ];
 
-    const videos_distill = [
+    // Distillation: 30s results
+    const videos_distill_30s = [
       'static/videos/distillation/001.mp4',
       'static/videos/distillation/002_wild.mp4',
       'static/videos/distillation/010.mp4',
+      'static/videos/distillation/1min/021.mp4',
+      'static/videos/distillation/1min/023.mp4',
       'static/videos/distillation/013.mp4',
       'static/videos/distillation/018_wild.mp4',
       'static/videos/distillation/023.mp4',
       'static/videos/distillation/027.mp4',
       'static/videos/distillation/031.mp4',
-      'static/videos/distillation/063.mp4'
+      'static/videos/distillation/063.mp4',
+      // 'static/videos/distillation/1min/001.mp4',
+      'static/videos/distillation/1min/011.mp4'
     ];
 
-    const videos_distill_1min = [
-      'static/videos/distillation/1min/001.mp4',
-      'static/videos/distillation/1min/011.mp4',
-      'static/videos/distillation/1min/013.mp4',
-      'static/videos/distillation/1min/021.mp4',
-      'static/videos/distillation/1min/023.mp4'
+    // Distillation: 1min results
+    // const videos_distill_1min = [
+    //   'static/videos/distillation/1min/001.mp4',
+    //   'static/videos/distillation/1min/011.mp4',
+    //   // 'static/videos/distillation/1min/013.mp4',
+    //   'static/videos/distillation/1min/021.mp4',
+    //   'static/videos/distillation/1min/023.mp4'
+    // ];
+
+    // SVI Base Model: split into two rows of 7
+    const videos_svi_r1 = videos_svi.slice(0, 7);
+    const videos_svi_r2 = videos_svi.slice(7);
+
+    // Memory FP: 30s row + 1min row (semantically split)
+    const videos_mem_fp_r1 = [
+      'static/videos/30s/031.mp4',
+      // 'static/videos/30s/000.mp4',
+      'static/videos/30s/012.mp4',
+      'static/videos/30s/004.mp4',
+      'static/videos/30s/076.mp4',
+      'static/videos/30s/002.mp4',
+      'static/videos/30s/021.mp4',
+      'static/videos/30s/091.mp4',
+      'static/videos/30s/025.mp4'
     ];
+    const videos_mem_fp_r2 = [
+      'static/videos/1min/091.mp4',
+      'static/videos/1min/094.mp4',
+      'static/videos/1min/097.mp4',
+      'static/videos/1min/000.mp4',
+      'static/videos/1min/001.mp4'
+    ];
+
+    // Memory TP: split into two rows of 5
+    const videos_mem_tp_r1 = videos_mem_tp.slice(0, 5);
+    const videos_mem_tp_r2 = videos_mem_tp.slice(5);
 
     const TWO_ROW_THRESHOLD = 6;
 
     function initVideoWall() {
       const sections = [
-        { containerId: 'videoContainer_svi', videos: videos_svi, fixedCols: 4 },
-        { containerId: 'videoContainer_30s_fp', videos: videos_30s_fp, fixedCols: 5 },
-        { containerId: 'videoContainer_30s_tp', videos: videos_30s_tp, fixedCols: 5 },
-        { containerId: 'videoContainer_1min', videos: videos_1min },
-        { containerId: 'videoContainer_distill', videos: videos_distill, singleRow: true },
-        { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min }
+        { containerId: 'videoContainer_svi_r1', videos: videos_svi_r1, singleRow: true },
+        { containerId: 'videoContainer_svi_r2', videos: videos_svi_r2, singleRow: true },
+        { containerId: 'videoContainer_mem_fp_r1', videos: videos_mem_fp_r1, singleRow: true },
+        { containerId: 'videoContainer_mem_fp_r2', videos: videos_mem_fp_r2, singleRow: true },
+        { containerId: 'videoContainer_mem_tp_r1', videos: videos_mem_tp_r1, singleRow: true },
+        { containerId: 'videoContainer_mem_tp_r2', videos: videos_mem_tp_r2, singleRow: true },
+        { containerId: 'videoContainer_distill_30s', videos: videos_distill_30s, singleRow: true }
+        // { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min, singleRow: true }
       ];
 
       sections.forEach(section => {
