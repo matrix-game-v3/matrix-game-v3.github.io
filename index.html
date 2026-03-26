@@ -21,29 +21,27 @@
 <body>
 
   <section class="hero"
-    style="background: url('static/imgs/hero_bg.png') no-repeat center center; background-size: cover; padding: 4rem 0 2rem; position: relative;">
-    <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.45);"></div>
-    <div class="hero-body has-text-centered" style="position: relative; z-index: 1;">
+    style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%); position: relative; height: 38vh; min-height: 0; overflow: hidden; display: flex; align-items: center;">
+    <div class="has-text-centered" style="position: relative; z-index: 1; width: 100%; padding: 0 1.5rem;">
       <h1 class="title is-1"
-        style="font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.4);">
+        style="font-size: 2.8rem; font-weight: 700; margin-bottom: 0.4rem; color: #fff; letter-spacing: 1px;">
         Matrix-Game 3.0</h1>
-      <p
-        style="font-size: 1.5rem; color: #e2e8f0; margin-bottom: 0.5rem; font-weight: 500; text-shadow: 0 1px 6px rgba(0,0,0,0.3);">
-        Real-Time and Streaming
-        Interactive World Model with Long-Horizon Memory</p>
-
-      <p style="font-size: 1.1rem; color: #cbd5e1; margin-bottom: 2rem;">
+      <p style="font-size: 1.2rem; color: #94a3b8; margin-bottom: 0.3rem; font-weight: 400;">
+        Real-Time and Streaming Interactive World Model with Long-Horizon Memory</p>
+      <p style="font-size: 1rem; color: #64748b; margin-bottom: 0.8rem;">
         <em>Skywork AI</em>
       </p>
-
-      <p style="margin-top:1rem;">
-        <a href="https://arxiv.org/abs/2508.13009" class="button is-light is-small is-rounded">
+      <p>
+        <a href="https://arxiv.org/abs/2508.13009" class="button is-dark is-small is-rounded"
+          style="border: 1px solid #334155;">
           <span class="icon"><i class="ai ai-arxiv"></i></span><span>Technical Report</span>
         </a>
-        <a href="https://github.com/SkyworkAI/Matrix-Game" class="button is-light is-small is-rounded">
+        <a href="https://github.com/SkyworkAI/Matrix-Game" class="button is-dark is-small is-rounded"
+          style="border: 1px solid #334155;">
           <span class="icon"><i class="fab fa-github"></i></span><span>GitHub</span>
         </a>
-        <a href="https://huggingface.co/Skywork/Matrix-Game-2.0" class="button is-light is-small is-rounded">
+        <a href="https://huggingface.co/Skywork/Matrix-Game-2.0" class="button is-dark is-small is-rounded"
+          style="border: 1px solid #334155;">
           <span class="icon">🤗</span><span>HuggingFace</span>
         </a>
       </p>
@@ -161,23 +159,43 @@
   <!-- VIDEO DEMOS -->
   <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">30-Second Generation (Base Model)</h2>
-      <p class="subtitle has-text-left">Interactive 30-second video generation showcasing the base memory-augmented
-        model across diverse game scenes.</p>
-      <div class="video-grid" id="videoContainer_30s"></div>
+      <h2 class="title is-2">Base Model Generation</h2>
+      <p class="subtitle has-text-left">Error-aware interactive base model with self-correction capability, generating
+        30-second coherent video sequences.</p>
+      <div class="video-grid" id="videoContainer_svi"></div>
     </div>
   </section>
 
   <section class="section">
     <div class="container is-max-desktop has-text-centered">
-      <h2 class="title is-2">1-Minute Generation (Base Model)</h2>
+      <h2 class="title is-2">30-Second Generation (Memory Model)</h2>
+      <p class="subtitle has-text-left">Memory-augmented model with camera-aware retrieval, generating 30-second
+        interactive videos with long-horizon consistency across diverse perspectives.</p>
+
+      <!-- First-Person Sub-section -->
+      <div style="margin-top: 2rem;">
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.5rem;">🎮 First-Person Perspective</h3>
+        <div class="video-grid" id="videoContainer_30s_fp"></div>
+      </div>
+
+      <!-- Third-Person Sub-section -->
+      <div style="margin-top: 2.5rem;">
+        <h3 class="title is-4 has-text-left" style="margin-bottom: 0.5rem;">🎬 Third-Person Perspective</h3>
+        <div class="video-grid" id="videoContainer_30s_tp"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
+    <div class="container is-max-desktop has-text-centered">
+      <h2 class="title is-2">1-Minute Generation (Memory Model)</h2>
       <p class="subtitle has-text-left">Matrix-Game 3.0 demonstrates highly consistent long-horizon memory by generating
         1-minute coherent diverse videos.</p>
       <div class="video-grid" id="videoContainer_1min"></div>
     </div>
   </section>
 
-  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
+  <section class="section">
     <div class="container is-max-desktop has-text-centered">
       <h2 class="title is-2">30-Second Generation (3-Step Distilled Model)</h2>
       <p class="subtitle has-text-left">Matrix-Game 3.0 distilled to a 3-step model provides ultra-fast real-time
@@ -186,7 +204,7 @@
     </div>
   </section>
 
-  <section class="section">
+  <section class="section" style="background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);">
     <div class="container is-max-desktop has-text-centered">
       <h2 class="title is-2">1-Minute Generation (3-Step Distilled Model)</h2>
       <p class="subtitle has-text-left">Long-horizon 1-minute generation achieved at ultra-fast speeds using the 3-step
@@ -194,6 +212,7 @@
       <div class="video-grid" id="videoContainer_distill_1min"></div>
     </div>
   </section>
+
 
   <!-- ACK / CITATION -->
   <section class="section">
@@ -334,6 +353,17 @@
       return card;
     }
 
+    const videos_svi = [
+      'static/videos/svi_base/0.mp4',
+      'static/videos/svi_base/1.mp4',
+      'static/videos/svi_base/2.mp4',
+      'static/videos/svi_base/3.mp4',
+      'static/videos/svi_base/4.mp4',
+      'static/videos/svi_base/5.mp4',
+      'static/videos/svi_base/6.mp4',
+      'static/videos/svi_base/7.mp4'
+    ];
+
     const videos_1min = [
       'static/videos/1min/000.mp4',
       'static/videos/1min/001.mp4',
@@ -341,7 +371,8 @@
       'static/videos/1min/094.mp4'
     ];
 
-    const videos_30s = [
+    // First-person 30s (10 best)
+    const videos_30s_fp = [
       'static/videos/30s/031.mp4',
       'static/videos/30s/000.mp4',
       'static/videos/30s/012.mp4',
@@ -351,9 +382,21 @@
       'static/videos/30s/002.mp4',
       'static/videos/30s/021.mp4',
       'static/videos/30s/091.mp4',
-      'static/videos/30s/025.mp4',
-      'static/videos/30s/073.mp4',
-      'static/videos/30s/097.mp4'
+      'static/videos/30s/025.mp4'
+    ];
+
+    // Third-person (10 best)
+    const videos_30s_tp = [
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_0_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_8_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_19_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_25_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_34_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_48_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_54_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_61_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_72_action.mp4',
+      'static/videos/tp_demo/video_lingbot-I2V-A14B_80_action.mp4'
     ];
 
     const videos_distill = [
@@ -362,7 +405,7 @@
       'static/videos/distillation/010.mp4',
       'static/videos/distillation/013.mp4',
       'static/videos/distillation/018_wild.mp4',
-      'static/videos/distillation/025.mp4'
+      'static/videos/distillation/027.mp4'
     ];
 
     const videos_distill_1min = [
@@ -377,8 +420,10 @@
 
     function initVideoWall() {
       const sections = [
+        { containerId: 'videoContainer_svi', videos: videos_svi, fixedCols: 4 },
+        { containerId: 'videoContainer_30s_fp', videos: videos_30s_fp, fixedCols: 5 },
+        { containerId: 'videoContainer_30s_tp', videos: videos_30s_tp, fixedCols: 5 },
         { containerId: 'videoContainer_1min', videos: videos_1min },
-        { containerId: 'videoContainer_30s', videos: videos_30s },
         { containerId: 'videoContainer_distill', videos: videos_distill },
         { containerId: 'videoContainer_distill_1min', videos: videos_distill_1min }
       ];
@@ -387,9 +432,24 @@
         const container = document.getElementById(section.containerId);
         if (!container) return;
         container.innerHTML = '';
-        container.className = 'video-scroll-container';
 
         const vids = section.videos;
+
+        // Fixed-column grid layout (e.g. SVI 4x2)
+        if (section.fixedCols) {
+          container.style.display = 'grid';
+          container.style.gridTemplateColumns = `repeat(${section.fixedCols}, 1fr)`;
+          container.style.gap = '16px';
+          container.style.marginTop = '20px';
+          vids.forEach(path => {
+            const card = createVideoCard(path);
+            card.style.width = '100%';
+            container.appendChild(card);
+          });
+          return;
+        }
+
+        container.className = 'video-scroll-container';
 
         if (vids.length > TWO_ROW_THRESHOLD) {
           // Two-row layout: split videos into columns of 2
